@@ -37,8 +37,6 @@ public class RenameCommand extends CommandBase {
                 if (newname.length() < 50){
                     item.setCustomName(newname.toString());
                     player.getInventory().setItemInHand(item);
-                    sender.sendMessage("debug2");
-
                 }
             }
         }
