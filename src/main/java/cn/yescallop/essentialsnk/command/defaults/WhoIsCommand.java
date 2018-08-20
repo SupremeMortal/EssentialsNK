@@ -43,14 +43,12 @@ public class WhoIsCommand extends CommandBase {
                 double x = target.getLocation().getX();
                 double y = target.getLocation().getY();
                 double z = target.getLocation().getZ();
-
-                DecimalFormat df2 = new DecimalFormat(".##");
-
+                
                 player.sendMessage(TextFormat.YELLOW + "===== WhoIS " + TextFormat.WHITE + target.getName() + " =====");
                 player.sendMessage(TextFormat.GOLD + "UUID " + TextFormat.WHITE + target.getUniqueId());
                 player.sendMessage(TextFormat.GOLD + "Health " + TextFormat.WHITE + target.getHealth() + "/20");
                 player.sendMessage(TextFormat.GOLD + "EXP " + TextFormat.WHITE + target.getExperience());
-                player.sendMessage(TextFormat.GOLD + "Location " + TextFormat.WHITE + "(" + targetLevel + ", x" + df2.format(x) + ", y" + df2.format(y) + ", z" + df2.format(z));
+                player.sendMessage(TextFormat.GOLD + "Location " + TextFormat.WHITE + "(" + targetLevel + ", x" + x + ", y" + y + ", z" + z);
                 player.sendMessage(TextFormat.GOLD + "First Joined " + TextFormat.WHITE + firstJoined);
                 player.sendMessage(TextFormat.GOLD + "IP Address " + TextFormat.WHITE + "/" + target.getAddress());
                 player.sendMessage(TextFormat.GOLD + "GameMode " + TextFormat.WHITE + target.getGamemode());
