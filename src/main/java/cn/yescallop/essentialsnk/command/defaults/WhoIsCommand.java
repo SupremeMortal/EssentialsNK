@@ -1,6 +1,5 @@
 package cn.yescallop.essentialsnk.command.defaults;
 
-import cn.nukkit.AdventureSettings;
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
@@ -9,7 +8,6 @@ import cn.nukkit.utils.TextFormat;
 import cn.yescallop.essentialsnk.EssentialsAPI;
 import cn.yescallop.essentialsnk.command.CommandBase;
 
-import java.text.DecimalFormat;
 import java.util.Date;
 
 public class WhoIsCommand extends CommandBase {
@@ -43,7 +41,7 @@ public class WhoIsCommand extends CommandBase {
                 double x = target.getLocation().getX();
                 double y = target.getLocation().getY();
                 double z = target.getLocation().getZ();
-                
+
                 player.sendMessage(TextFormat.YELLOW + "===== WhoIS " + TextFormat.WHITE + target.getName() + " =====");
                 player.sendMessage(TextFormat.GOLD + "UUID " + TextFormat.WHITE + target.getUniqueId());
                 player.sendMessage(TextFormat.GOLD + "Health " + TextFormat.WHITE + target.getHealth() + "/20");
