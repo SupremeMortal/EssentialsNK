@@ -44,6 +44,7 @@ public class CommandManager {
         map.register("EssentialsNK", new TopCommand(api));
         map.register("EssentialsNK", new VanishCommand(api));
         map.register("EssentialsNK", new WorldCommand(api));
+        map.register("EssentialsNK", new WhoIsCommand(api));
 
         map.register("EssentialsNK", new DelHomeCommand(api));
         map.register("EssentialsNK", new HomeCommand(api));

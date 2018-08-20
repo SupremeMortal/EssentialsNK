@@ -11,7 +11,6 @@ import cn.yescallop.essentialsnk.command.CommandBase;
 
 import java.util.StringJoiner;
 
-
 public class RenameCommand extends CommandBase {
 
     public RenameCommand(EssentialsAPI api) {
