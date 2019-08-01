@@ -7,7 +7,7 @@ main: cn.yescallop.essentialsnk.EssentialsNK
 
 permissions:
   essentialsnk.back:
-    default: op
+    default: true
   essentialsnk.break:
     default: op
   essentialsnk.break.bedrock:
@@ -27,7 +27,7 @@ permissions:
   essentialsnk.delwarp:
     default: op
   essentialsnk.depth:
-    default: op
+    default: true
   essentialsnk.extinguish:
     default: op
   essentialsnk.extinguish.others:
@@ -57,7 +57,7 @@ permissions:
   essentialsnk.ignore:
     default: true
   essentialsnk.itemdb:
-    default: op
+    default: true
   essentialsnk.jump:
     default: op
   essentialsnk.kickall:
@@ -69,7 +69,7 @@ permissions:
   essentialsnk.mute:
     default: op
   essentialsnk.ping:
-    default: op
+    default: true
   essentialsnk.realname:
     default: op
   essentialsnk.rename:
@@ -85,7 +85,7 @@ permissions:
   essentialsnk.setwarp:
     default: op
   essentialsnk.spawn:
-    default: op
+    default: true
   essentialsnk.spawn.others:
     default: op
   essentialsnk.setspawn:
@@ -99,17 +99,17 @@ permissions:
   essentialsnk.top:
     default: op
   essentialsnk.tpa:
-    default: op
+    default: true
   essentialsnk.tpaall:
     default: op
   essentialsnk.tpaccept:
-    default: op
+    default: true
   essentialsnk.tpahere:
-    default: op
+    default: true
   essentialsnk.tpall:
     default: op
   essentialsnk.tpdeny:
-    default: op
+    default: true
   essentialsnk.tphere:
     default: op
   essentialsnk.vanish:
@@ -121,4 +121,4 @@ permissions:
   essentialsnk.warp.others:
     default: op
   essentialsnk.world:
-    default: op
+    default: true
