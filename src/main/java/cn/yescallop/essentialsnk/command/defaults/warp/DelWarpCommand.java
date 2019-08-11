@@ -1,6 +1,8 @@
 package cn.yescallop.essentialsnk.command.defaults.warp;
 
 import cn.nukkit.command.CommandSender;
+import cn.nukkit.command.data.CommandParamType;
+import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.utils.TextFormat;
 import cn.yescallop.essentialsnk.EssentialsAPI;
 import cn.yescallop.essentialsnk.Language;
@@ -11,6 +13,12 @@ public class DelWarpCommand extends CommandBase {
     public DelWarpCommand(EssentialsAPI api) {
         super("delwarp", api);
         this.setAliases(new String[]{"remwarp", "rmwarp"});
+
+        // command parameters
+        commandParameters.clear();
+        this.commandParameters.put("default", new CommandParameter[] {
+                new CommandParameter("warp", CommandParamType.TEXT, false)
+        });
     }
 
     public boolean execute(CommandSender sender, String label, String[] args) {

@@ -2,6 +2,8 @@ package cn.yescallop.essentialsnk.command.defaults.teleport;
 
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
+import cn.nukkit.command.data.CommandParamType;
+import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.utils.TextFormat;
 import cn.yescallop.essentialsnk.EssentialsAPI;
 import cn.yescallop.essentialsnk.Language;
@@ -12,6 +14,12 @@ public class TPACommand extends CommandBase {
     public TPACommand(EssentialsAPI api) {
         super("tpa", api);
         this.setAliases(new String[]{"call", "tpask"});
+
+        // command parameters
+        commandParameters.clear();
+        this.commandParameters.put("default", new CommandParameter[] {
+                new CommandParameter("player", CommandParamType.TARGET, false)
+        });
     }
 
     public boolean execute(CommandSender sender, String label, String[] args) {
@@ -25,6 +33,9 @@ public class TPACommand extends CommandBase {
             this.sendUsage(sender);
             return false;
         }
+        if (api.hasCooldown(sender)) {
+            return true;
+        }
         Player player = api.getServer().getPlayer(args[0]);
         if (player == null) {
             sender.sendMessage(TextFormat.RED + Language.translate("commands.generic.player.notfound", args[0]));
@@ -35,7 +46,7 @@ public class TPACommand extends CommandBase {
             return false;
         }
         api.requestTP((Player) sender, player, true);
-        player.sendMessage(Language.translate("commands.tpa.invite", ((Player) sender).getName()));
+        player.sendMessage(Language.translate("commands.tpa.invite", sender.getName()));
         sender.sendMessage(Language.translate("commands.tpa.success", player.getDisplayName()));
         return true;
     }

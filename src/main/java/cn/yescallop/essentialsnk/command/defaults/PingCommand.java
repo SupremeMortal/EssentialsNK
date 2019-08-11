@@ -8,6 +8,9 @@ public class PingCommand extends CommandBase {
 
     public PingCommand(EssentialsAPI api) {
         super("ping", api);
+
+        // command parameters
+        commandParameters.clear();
     }
 
     public boolean execute(CommandSender sender, String label, String[] args) {

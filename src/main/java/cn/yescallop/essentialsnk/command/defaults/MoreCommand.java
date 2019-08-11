@@ -12,6 +12,9 @@ public class MoreCommand extends CommandBase {
 
     public MoreCommand(EssentialsAPI api) {
         super("more", api);
+
+        // command parameters
+        commandParameters.clear();
     }
 
     public boolean execute(CommandSender sender, String label, String[] args) {

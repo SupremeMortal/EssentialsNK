@@ -1,4 +1,6 @@
 # EssentialsNK
 Essentials plugin for Nukkit
 
-**NEED HELP TO IMPROVE**
+Contributions are welcome!
+
+__[Download Page](https://nukkitx.com/resources/essentialsnk.15/)__

@@ -2,6 +2,8 @@ package cn.yescallop.essentialsnk.command.defaults.teleport;
 
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
+import cn.nukkit.command.data.CommandParamType;
+import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.utils.TextFormat;
 import cn.yescallop.essentialsnk.EssentialsAPI;
 import cn.yescallop.essentialsnk.Language;
@@ -11,6 +13,12 @@ public class TPAllCommand extends CommandBase {
 
     public TPAllCommand(EssentialsAPI api) {
         super("tpall", api);
+
+        // command parameters
+        commandParameters.clear();
+        this.commandParameters.put("default", new CommandParameter[] {
+                new CommandParameter("player", CommandParamType.TARGET, true)
+        });
     }
 
     public boolean execute(CommandSender sender, String label, String[] args) {

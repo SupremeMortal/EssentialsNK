@@ -17,13 +17,16 @@ public class RenameCommand extends CommandBase {
         super("rename", api);
         this.setAliases(new String[]{"renameme"});
 
+
+        // command parameters
+        commandParameters.clear();
         this.commandParameters.put("default", new CommandParameter[] {
                 new CommandParameter("name", CommandParamType.STRING, false)
         });
     }
 
     public boolean execute(CommandSender sender, String label, String[] args) {
-        if (!this.testPermission(sender) && !this.testIngame(sender)) {
+        if (!this.testPermission(sender) || !this.testIngame(sender)) {
             return false;
         }
 
@@ -43,7 +46,7 @@ public class RenameCommand extends CommandBase {
                 item.setCustomName(newName.toString());
                 player.getInventory().setItemInHand(item);
             } else {
-                Language.translate("commands.rename.length");
+                player.sendMessage(Language.translate("commands.rename.length"));
                 return false;
             }
         }

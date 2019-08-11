@@ -13,6 +13,9 @@ public class BreakCommand extends CommandBase {
 
     public BreakCommand(EssentialsAPI api) {
         super("break", api);
+
+        // command parameters
+        commandParameters.clear();
     }
 
     public boolean execute(CommandSender sender, String label, String[] args) {

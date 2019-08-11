@@ -2,6 +2,7 @@ package cn.yescallop.essentialsnk.command.defaults;
 
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
+import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.item.Item;
 import cn.yescallop.essentialsnk.EssentialsAPI;
 import cn.yescallop.essentialsnk.Language;
@@ -14,6 +15,12 @@ public class RepairCommand extends CommandBase {
     public RepairCommand(EssentialsAPI api) {
         super("repair", api);
         this.setAliases(new String[]{"fix"});
+
+        // command parameters
+        commandParameters.clear();
+        this.commandParameters.put("default", new CommandParameter[] {
+                new CommandParameter("player", false, new String[] {"all", "hand"})
+        });
     }
 
     public boolean execute(CommandSender sender, String label, String[] args) {

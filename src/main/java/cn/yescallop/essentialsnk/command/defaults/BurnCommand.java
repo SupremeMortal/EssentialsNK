@@ -2,6 +2,8 @@ package cn.yescallop.essentialsnk.command.defaults;
 
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
+import cn.nukkit.command.data.CommandParamType;
+import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.utils.TextFormat;
 import cn.yescallop.essentialsnk.EssentialsAPI;
 import cn.yescallop.essentialsnk.Language;
@@ -11,6 +13,13 @@ public class BurnCommand extends CommandBase {
 
     public BurnCommand(EssentialsAPI api) {
         super("burn", api);
+
+        // command parameters
+        commandParameters.clear();
+        this.commandParameters.put("default", new CommandParameter[] {
+                new CommandParameter("target", CommandParamType.TARGET, false),
+                new CommandParameter("time", CommandParamType.INT, false)
+        });
     }
 
     public boolean execute(CommandSender sender, String label, String[] args) {

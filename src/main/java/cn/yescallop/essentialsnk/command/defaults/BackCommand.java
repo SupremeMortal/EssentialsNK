@@ -13,6 +13,9 @@ public class BackCommand extends CommandBase {
     public BackCommand(EssentialsAPI api) {
         super("back", api);
         this.setAliases(new String[]{"return"});
+
+        // command parameters
+        commandParameters.clear();
     }
 
     public boolean execute(CommandSender sender, String label, String[] args) {

@@ -2,6 +2,8 @@ package cn.yescallop.essentialsnk.command.defaults.warp;
 
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
+import cn.nukkit.command.data.CommandParamType;
+import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.level.Location;
 import cn.nukkit.utils.TextFormat;
 import cn.yescallop.essentialsnk.EssentialsAPI;
@@ -13,6 +15,16 @@ public class WarpCommand extends CommandBase {
     public WarpCommand(EssentialsAPI api) {
         super("warp", api);
         this.setAliases(new String[]{"warps"});
+
+        // command parameters
+        commandParameters.clear();
+        this.commandParameters.put("default", new CommandParameter[] {
+                new CommandParameter("warp", CommandParamType.STRING, true),
+        });
+        this.commandParameters.put("other", new CommandParameter[] {
+                new CommandParameter("player", CommandParamType.TARGET, false),
+                new CommandParameter("warp", CommandParamType.STRING, false)
+        });
     }
 
     public boolean execute(CommandSender sender, String label, String[] args) {
@@ -37,11 +49,17 @@ public class WarpCommand extends CommandBase {
             sender.sendMessage(TextFormat.RED + Language.translate("commands.warp.notexists", args[0]));
             return false;
         }
+
+        if (api.hasCooldown(sender)) {
+            return true;
+        }
+
         Player player;
         if (args.length == 1) {
             if (!this.testIngame(sender)) {
                 return false;
             }
+
             player = (Player) sender;
         } else {
             if (!sender.hasPermission("essentialsnk.warp.others")) {
@@ -54,10 +72,9 @@ public class WarpCommand extends CommandBase {
                 return false;
             }
         }
-        player.teleport(warp);
-        player.sendMessage(Language.translate("commands.warp.success", args[0]));
+        api.onTP(player, warp, Language.translate("commands.warp.success", args[0]));
         if (sender != player) {
-            player.sendMessage(Language.translate("commands.warp.success.other", new String[]{player.getDisplayName(), args[0]}));
+            player.sendMessage(Language.translate("commands.warp.success.other", player.getDisplayName(), args[0]));
         }
         return true;
     }

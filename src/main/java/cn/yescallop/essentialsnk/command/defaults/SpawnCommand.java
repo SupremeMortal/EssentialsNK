@@ -2,6 +2,8 @@ package cn.yescallop.essentialsnk.command.defaults;
 
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
+import cn.nukkit.command.data.CommandParamType;
+import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.utils.TextFormat;
 import cn.yescallop.essentialsnk.EssentialsAPI;
 import cn.yescallop.essentialsnk.Language;
@@ -14,6 +16,12 @@ public class SpawnCommand extends CommandBase {
 
     public SpawnCommand(EssentialsAPI api) {
         super("spawn", api);
+
+        // command parameters
+        commandParameters.clear();
+        this.commandParameters.put("default", new CommandParameter[] {
+                new CommandParameter("player", CommandParamType.TARGET, true)
+        });
     }
 
     @Override
@@ -37,6 +45,10 @@ public class SpawnCommand extends CommandBase {
             return false;
         }
 
+        if (api.hasCooldown(sender)) {
+            return true;
+        }
+
         Player p;
 
         if (args.length == 0) {
@@ -50,8 +62,10 @@ public class SpawnCommand extends CommandBase {
             return false;
         }
 
-        p.teleport(getAPI().getServer().getDefaultLevel().getSpawnLocation());
-        p.sendMessage(TextFormat.YELLOW + Language.translate("commands.generic.teleporting"));
+        api.onTP(p, api.getServer().getDefaultLevel().getSpawnLocation(), Language.translate("commands.generic.teleporting"));
+        if (args.length == 1) {
+            sender.sendMessage(Language.translate("commands.generic.teleporting"));
+        }
         return true;
     }
 }

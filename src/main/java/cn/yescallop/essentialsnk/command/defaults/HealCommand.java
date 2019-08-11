@@ -2,6 +2,8 @@ package cn.yescallop.essentialsnk.command.defaults;
 
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
+import cn.nukkit.command.data.CommandParamType;
+import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.level.particle.HeartParticle;
 import cn.nukkit.utils.TextFormat;
 import cn.yescallop.essentialsnk.EssentialsAPI;
@@ -12,6 +14,12 @@ public class HealCommand extends CommandBase {
 
     public HealCommand(EssentialsAPI api) {
         super("heal", api);
+
+        // command parameters
+        commandParameters.clear();
+        this.commandParameters.put("default", new CommandParameter[] {
+                new CommandParameter("player", CommandParamType.TARGET, true)
+        });
     }
 
     public boolean execute(CommandSender sender, String label, String[] args) {

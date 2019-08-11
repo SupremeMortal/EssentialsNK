@@ -16,6 +16,8 @@ public class CommandManager {
 
     public static void registerAll(EssentialsAPI api) {
         CommandMap map = api.getServer().getCommandMap();
+        map.register("EssentialsNK", new EssentialsCommand(api));
+
         map.register("EssentialsNK", new BackCommand(api));
         map.register("EssentialsNK", new BreakCommand(api));
         map.register("EssentialsNK", new BroadcastCommand(api));

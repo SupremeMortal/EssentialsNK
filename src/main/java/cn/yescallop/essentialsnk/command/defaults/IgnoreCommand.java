@@ -12,6 +12,9 @@ public class IgnoreCommand extends CommandBase {
 
     public IgnoreCommand(EssentialsAPI api) {
         super("ignore", api);
+
+        // command parameters
+        commandParameters.clear();
         this.commandParameters.put("default", new CommandParameter[] {
                 new CommandParameter("player", CommandParamType.TARGET, false)
         });

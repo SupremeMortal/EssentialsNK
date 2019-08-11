@@ -11,6 +11,9 @@ public class KickAllCommand extends CommandBase {
 
     public KickAllCommand(EssentialsAPI api) {
         super("kickall", api);
+
+        // command parameters
+        commandParameters.clear();
     }
 
     public boolean execute(CommandSender sender, String label, String[] args) {

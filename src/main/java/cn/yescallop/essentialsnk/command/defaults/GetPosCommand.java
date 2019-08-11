@@ -2,6 +2,8 @@ package cn.yescallop.essentialsnk.command.defaults;
 
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
+import cn.nukkit.command.data.CommandParamType;
+import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.utils.TextFormat;
 import cn.yescallop.essentialsnk.EssentialsAPI;
 import cn.yescallop.essentialsnk.Language;
@@ -12,6 +14,12 @@ public class GetPosCommand extends CommandBase {
     public GetPosCommand(EssentialsAPI api) {
         super("getpos", api);
         this.setAliases(new String[]{"coords", "position", "whereami", "getlocation", "getloc"});
+
+        // command parameters
+        commandParameters.clear();
+        this.commandParameters.put("default", new CommandParameter[] {
+                new CommandParameter("player", CommandParamType.TARGET, true)
+        });
     }
 
     public boolean execute(CommandSender sender, String label, String[] args) {

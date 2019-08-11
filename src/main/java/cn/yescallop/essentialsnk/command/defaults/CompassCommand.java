@@ -11,6 +11,9 @@ public class CompassCommand extends CommandBase {
     public CompassCommand(EssentialsAPI api) {
         super("compass", api);
         this.setAliases(new String[]{"direction"});
+
+        // command parameters
+        commandParameters.clear();
     }
 
     public boolean execute(CommandSender sender, String label, String[] args) {

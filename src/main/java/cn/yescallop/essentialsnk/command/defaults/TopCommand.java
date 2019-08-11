@@ -10,6 +10,9 @@ public class TopCommand extends CommandBase {
 
     public TopCommand(EssentialsAPI api) {
         super("top", api);
+
+        // command parameters
+        commandParameters.clear();
     }
 
     public boolean execute(CommandSender sender, String label, String[] args) {

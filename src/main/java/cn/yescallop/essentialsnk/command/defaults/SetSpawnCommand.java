@@ -14,6 +14,9 @@ public class SetSpawnCommand extends CommandBase {
 
     public SetSpawnCommand(EssentialsAPI api) {
         super("setspawn", api);
+
+        // command parameters
+        commandParameters.clear();
     }
 
     @Override
@@ -34,7 +37,7 @@ public class SetSpawnCommand extends CommandBase {
 
         Player p = (Player) sender;
         getAPI().getServer().setDefaultLevel(p.getLevel());
-        p.getLevel().setSpawnLocation(p);
+        p.getLevel().setSpawnLocation(p.round());
 
         p.sendMessage(TextFormat.YELLOW + Language.translate("commands.setspawn.success"));
         getAPI().getLogger().info(TextFormat.YELLOW + "Server's spawn point set to " + TextFormat.AQUA + p.getLevel().getName() + TextFormat.YELLOW + " by " + TextFormat.GREEN + p.getName());

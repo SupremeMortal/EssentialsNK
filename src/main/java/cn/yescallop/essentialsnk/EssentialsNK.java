@@ -2,6 +2,7 @@ package cn.yescallop.essentialsnk;
 
 import cn.nukkit.plugin.PluginBase;
 import cn.yescallop.essentialsnk.command.CommandManager;
+import cn.yescallop.essentialsnk.task.TeleportationTask;
 
 public class EssentialsNK extends PluginBase {
 
@@ -15,5 +16,6 @@ public class EssentialsNK extends PluginBase {
         CommandManager.registerAll(this.api);
         this.getServer().getPluginManager().registerEvents(new EventListener(this.api), this);
         this.getLogger().info(Language.translate("essentialsnk.loaded"));
+        this.getServer().getScheduler().scheduleRepeatingTask(this, new TeleportationTask(api), 1);
     }
 }
