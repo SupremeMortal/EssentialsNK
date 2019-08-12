@@ -124,3 +124,7 @@ permissions:
     default: true
   essentialsnk.reload:
     default: op
+  essentialsnk.whois:
+    default: op
+  essentialsnk.whois.other:
+    default: op

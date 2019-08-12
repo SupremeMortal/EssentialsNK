@@ -54,24 +54,17 @@ public class Language {
             String content = Utils.readFile(stream);
             Map<String, String> d = new HashMap<>();
             for (String line : content.split("\n")) {
-                line = line.trim();
                 if (line.equals("") || line.charAt(0) == '#') {
                     continue;
                 }
-                String[] t = line.split("=");
-                if (t.length < 2) {
+                int splitIndex = line.indexOf('=');
+                if (splitIndex == -1) {
                     continue;
                 }
-                String key = t[0];
-                StringBuilder value = new StringBuilder();
-                for (int i = 1; i < t.length - 1; i++) {
-                    value.append(t[i]).append("=");
-                }
-                value.append(t[t.length - 1]);
-                if (value.toString().equals("")) {
-                    continue;
-                }
-                d.put(key, value.toString());
+                String key = line.substring(0, splitIndex);
+                String value = line.substring(splitIndex + 1);
+
+                d.put(key, value);
             }
             return d;
         } catch (IOException e) {
