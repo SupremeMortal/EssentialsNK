@@ -37,7 +37,7 @@ public class SetSpawnCommand extends CommandBase {
 
         Player p = (Player) sender;
         getAPI().getServer().setDefaultLevel(p.getLevel());
-        p.getLevel().setSpawnLocation(p.round());
+        p.getLevel().setSpawnLocation(new Vector3(p.x, p.y, p.z));
 
         p.sendMessage(TextFormat.YELLOW + Language.translate("commands.setspawn.success"));
         getAPI().getLogger().info(TextFormat.YELLOW + "Server's spawn point set to " + TextFormat.AQUA + p.getLevel().getName() + TextFormat.YELLOW + " by " + TextFormat.GREEN + p.getName());
