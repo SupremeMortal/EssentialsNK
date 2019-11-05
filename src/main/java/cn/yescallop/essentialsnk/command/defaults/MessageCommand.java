@@ -17,11 +17,9 @@ public class MessageCommand extends CommandBase {
 
         // command parameters
         this.commandParameters.clear();
-        this.commandParameters.put("player", new CommandParameter[]{
-                new CommandParameter("player", CommandParamType.TARGET, false)
-        });
-        this.commandParameters.put("uuid", new CommandParameter[]{
-                new CommandParameter("uuid", CommandParamType.STRING, false)
+        this.commandParameters.put("default", new CommandParameter[]{
+                new CommandParameter("player", CommandParamType.TARGET, false),
+                new CommandParameter("message", CommandParamType.TEXT, false)
         });
     }
 
