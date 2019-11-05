@@ -11,7 +11,6 @@ import cn.yescallop.essentialsnk.command.defaults.warp.DelWarpCommand;
 import cn.yescallop.essentialsnk.command.defaults.warp.SetWarpCommand;
 import cn.yescallop.essentialsnk.command.defaults.warp.WarpCommand;
 
-
 public class CommandManager {
 
     public static void registerAll(EssentialsAPI api) {
@@ -36,11 +35,13 @@ public class CommandManager {
         map.register("EssentialsNK", new JumpCommand(api));
         map.register("EssentialsNK", new KickAllCommand(api));
         map.register("EssentialsNK", new LightningCommand(api));
+        map.register("EssentialsNK", new MessageCommand(api));
         map.register("EssentialsNK", new MoreCommand(api));
         map.register("EssentialsNK", new MuteCommand(api));
         map.register("EssentialsNK", new PingCommand(api));
         map.register("EssentialsNK", new RealNameCommand(api));
         map.register("EssentialsNK", new RepairCommand(api));
+        map.register("EssentialsNK", new ReplyCommand(api));
         map.register("EssentialsNK", new SpeedCommand(api));
         map.register("EssentialsNK", new SudoCommand(api));
         map.register("EssentialsNK", new TopCommand(api));

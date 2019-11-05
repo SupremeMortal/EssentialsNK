@@ -54,6 +54,7 @@ public class EssentialsAPI {
     private Map<Player, Location> playerLastLocation = new HashMap<>();
     private Map<Integer, TPRequest> tpRequests = new ConcurrentHashMap<>();
     private List<Player> vanishedPlayers = new ArrayList<>();
+    private Map<String, String> lastMessagedPlayers = new HashMap<>();
 
     private final ConfigType homeConfig;
     private final ConfigType warpConfig;
@@ -564,6 +565,16 @@ public class EssentialsAPI {
     public void unmute(UUID uuid) {
         checkAndUpdateLegacyMute(uuid);
         this.configs.remove(this.muteConfig, uuid.toString());
+    }
+
+    /**
+     * Returns a map of the last player another player
+     * sent a message to.
+     *
+     * @return a map of the last player another player sent a message to
+     */
+    public Map<String, String> getLastMessagedPlayers() {
+        return lastMessagedPlayers;
     }
 
     private void checkAndUpdateLegacyMute(UUID uuid) {
