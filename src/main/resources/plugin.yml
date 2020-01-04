@@ -121,7 +121,7 @@ permissions:
   essentialsnk.warp.others:
     default: op
   essentialsnk.world:
-    default: true
+    default: op
   essentialsnk.reload:
     default: op
   essentialsnk.whois:
