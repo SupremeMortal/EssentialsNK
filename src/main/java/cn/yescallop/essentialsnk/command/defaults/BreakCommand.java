@@ -13,32 +13,26 @@ public class BreakCommand extends CommandBase {
 
     public BreakCommand(EssentialsAPI api) {
         super("break", api);
-
-        // command parameters
         commandParameters.clear();
     }
 
     public boolean execute(CommandSender sender, String label, String[] args) {
-        if (!this.testPermission(sender)) {
+        if (!this.testPermission(sender) || !this.testInGame(sender)) {
             return false;
         }
-        if (!this.testIngame(sender)) {
-            return false;
-        }
-        if (args.length != 0) {
-            this.sendUsage(sender);
-            return false;
-        }
+
         Player player = (Player) sender;
         Block block = player.getTargetBlock(120, new Integer[]{Block.AIR});
         if (block == null) {
-            sender.sendMessage(TextFormat.RED + Language.translate("commands.break.unreachable"));
+            player.sendMessage(TextFormat.RED + Language.translate("commands.break.unreachable"));
             return false;
         }
-        if (block.getId() == Block.BEDROCK && !sender.hasPermission("essentialsnk.break.bedrock")) {
-            sender.sendMessage(TextFormat.RED + Language.translate("commands.break.bedrock"));
+
+        if (block.getId() == Block.BEDROCK && !player.hasPermission("essentialsnk.break.bedrock")) {
+            player.sendMessage(TextFormat.RED + Language.translate("commands.break.bedrock"));
             return false;
         }
+
         player.getLevel().setBlock(block, new BlockAir(), true, true);
         return true;
     }

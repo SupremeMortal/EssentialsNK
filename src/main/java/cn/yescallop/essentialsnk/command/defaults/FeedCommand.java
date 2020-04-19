@@ -2,6 +2,7 @@ package cn.yescallop.essentialsnk.command.defaults;
 
 import cn.nukkit.Player;
 import cn.nukkit.PlayerFood;
+import cn.nukkit.Server;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
@@ -14,11 +15,8 @@ public class FeedCommand extends CommandBase {
 
     public FeedCommand(EssentialsAPI api) {
         super("feed", api);
-        this.setAliases(new String[]{"eat"});
-
-        // command parameters
-        commandParameters.clear();
-        this.commandParameters.put("default", new CommandParameter[] {
+        this.setAliases(new String[]{"food", "eat"});
+        this.commandParameters.put("default", new CommandParameter[]{
                 new CommandParameter("player", CommandParamType.TARGET, true)
         });
     }
@@ -27,27 +25,27 @@ public class FeedCommand extends CommandBase {
         if (!this.testPermission(sender)) {
             return false;
         }
-        if (args.length > 1) {
-            this.sendUsage(sender);
-            return false;
-        }
+
         Player player;
         if (args.length == 0) {
-            if (!this.testIngame(sender)) {
+            if (!this.testInGame(sender)) {
                 return false;
             }
+
             player = (Player) sender;
         } else {
             if (!sender.hasPermission("essentialsnk.feed.others")) {
                 this.sendPermissionMessage(sender);
                 return false;
             }
-            player = api.getServer().getPlayer(args[0]);
+
+            player = Server.getInstance().getPlayer(args[0]);
             if (player == null) {
                 sender.sendMessage(TextFormat.RED + Language.translate("commands.generic.player.notfound", args[0]));
                 return false;
             }
         }
+
         PlayerFood foodData = player.getFoodData();
         foodData.setLevel(foodData.getMaxLevel());
         foodData.sendFoodLevel();

@@ -9,8 +9,6 @@ import cn.yescallop.essentialsnk.command.CommandBase;
 public class EssentialsCommand extends CommandBase {
     public EssentialsCommand(EssentialsAPI api) {
         super("essentials", api);
-        this.setAliases(new String[]{"ess"});
-        this.commandParameters.clear();
         this.commandParameters.put("defaults", new CommandParameter[]{
                 new CommandParameter("essOption", true, new String[]{"reload"})
         });
@@ -21,17 +19,17 @@ public class EssentialsCommand extends CommandBase {
         if (!this.testPermission(sender)) {
             return false;
         }
+
         if (args.length == 0) {
-            sender.sendMessage(Language.translate("essentials.version", api.getVersion()));
+            sender.sendMessage(Language.translate("essentials.version", essentialsAPI.getVersion()));
             return true;
         }
-        if (args.length != 1) {
-            return false;
-        }
+
         if (!args[0].equalsIgnoreCase("reload") || !sender.hasPermission("essentialsnk.reload")) {
             return false;
         }
-        api.reload();
+
+        essentialsAPI.reload();
         sender.sendMessage(Language.translate("essentials.reloaded"));
         return true;
     }

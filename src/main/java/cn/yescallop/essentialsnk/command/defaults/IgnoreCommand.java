@@ -2,6 +2,7 @@ package cn.yescallop.essentialsnk.command.defaults;
 
 import cn.nukkit.IPlayer;
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
@@ -14,18 +15,16 @@ public class IgnoreCommand extends CommandBase {
 
     public IgnoreCommand(EssentialsAPI api) {
         super("ignore", api);
-
-        // command parameters
-        commandParameters.clear();
-        this.commandParameters.put("default", new CommandParameter[] {
+        this.commandParameters.put("default", new CommandParameter[]{
                 new CommandParameter("player", CommandParamType.TARGET, false)
         });
     }
 
 
     @Override
+    @SuppressWarnings("deprecation")
     public boolean execute(CommandSender sender, String label, String[] args) {
-        if (!this.testPermission(sender) || !this.testIngame(sender)) {
+        if (!this.testPermission(sender) || !this.testInGame(sender)) {
             return false;
         }
 
@@ -35,26 +34,22 @@ public class IgnoreCommand extends CommandBase {
         }
 
         Player player = (Player) sender;
-
-        IPlayer toIgnore = player.getServer().getPlayer(args[0]);
+        IPlayer toIgnore = Server.getInstance().getPlayer(args[0]);
 
         if (toIgnore == null) {
-            toIgnore = player.getServer().getOfflinePlayer(args[0]);
+            toIgnore = Server.getInstance().getOfflinePlayer(args[0]);
 
             if (toIgnore.getUniqueId() == null) {
                 this.sendUsage(sender);
                 return false;
             }
         }
-        if (toIgnore == player) {
+
+        if (toIgnore.equals(player)) {
             sender.sendMessage(TextFormat.RED + Language.translate("commands.ignore.self"));
         }
 
-        if (api.ignore(player.getUniqueId(), toIgnore.getUniqueId())) {
-            sender.sendMessage("Successfully ignored");
-        } else {
-            sender.sendMessage("Successfully un-ignored");
-        }
+        sender.sendMessage(essentialsAPI.ignore(player.getUniqueId(), toIgnore.getUniqueId()) ? "Successfully ignored" : "Successfully un-ignored");
         return true;
     }
 }

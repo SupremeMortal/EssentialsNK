@@ -1,6 +1,7 @@
 package cn.yescallop.essentialsnk.command.defaults.warp;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
@@ -15,13 +16,10 @@ public class WarpCommand extends CommandBase {
     public WarpCommand(EssentialsAPI api) {
         super("warp", api);
         this.setAliases(new String[]{"warps"});
-
-        // command parameters
-        commandParameters.clear();
-        this.commandParameters.put("default", new CommandParameter[] {
+        this.commandParameters.put("default", new CommandParameter[]{
                 new CommandParameter("warp", CommandParamType.STRING, true),
         });
-        this.commandParameters.put("other", new CommandParameter[] {
+        this.commandParameters.put("other", new CommandParameter[]{
                 new CommandParameter("player", CommandParamType.TARGET, false),
                 new CommandParameter("warp", CommandParamType.STRING, false)
         });
@@ -31,32 +29,31 @@ public class WarpCommand extends CommandBase {
         if (!this.testPermission(sender)) {
             return false;
         }
-        if (args.length > 2) {
-            this.sendUsage(sender);
-            return false;
-        }
+
         if (args.length == 0) {
-            String[] list = api.getWarpsList();
+            String[] list = essentialsAPI.getWarpsList();
             if (list.length == 0) {
                 sender.sendMessage(TextFormat.RED + Language.translate("commands.warp.nowarp"));
                 return false;
             }
+
             sender.sendMessage(Language.translate("commands.warp.list") + "\n" + String.join(", ", list));
             return true;
         }
-        Location warp = api.getWarp(args[0].toLowerCase());
+
+        Location warp = essentialsAPI.getWarp(args[0].toLowerCase());
         if (warp == null) {
             sender.sendMessage(TextFormat.RED + Language.translate("commands.warp.notexists", args[0]));
             return false;
         }
 
-        if (api.hasCooldown(sender)) {
+        if (essentialsAPI.hasCooldown(sender)) {
             return true;
         }
 
         Player player;
         if (args.length == 1) {
-            if (!this.testIngame(sender)) {
+            if (!this.testInGame(sender)) {
                 return false;
             }
 
@@ -66,16 +63,19 @@ public class WarpCommand extends CommandBase {
                 this.sendPermissionMessage(sender);
                 return false;
             }
-            player = api.getServer().getPlayer(args[0]);
+
+            player = Server.getInstance().getPlayer(args[0]);
             if (player == null) {
                 sender.sendMessage(TextFormat.RED + Language.translate("commands.generic.player.notfound", args[0]));
                 return false;
             }
         }
-        api.onTP(player, warp, Language.translate("commands.warp.success", args[0]));
+
+        essentialsAPI.onTP(player, warp, Language.translate("commands.warp.success", args[0]));
         if (sender != player) {
             player.sendMessage(Language.translate("commands.warp.success.other", player.getDisplayName(), args[0]));
         }
+
         return true;
     }
 }

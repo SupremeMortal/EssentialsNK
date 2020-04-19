@@ -15,25 +15,21 @@ public class RepairCommand extends CommandBase {
     public RepairCommand(EssentialsAPI api) {
         super("repair", api);
         this.setAliases(new String[]{"fix"});
-
-        // command parameters
-        commandParameters.clear();
-        this.commandParameters.put("default", new CommandParameter[] {
-                new CommandParameter("player", false, new String[] {"all", "hand"})
+        this.commandParameters.put("default", new CommandParameter[]{
+                new CommandParameter("player", false, new String[]{"all", "hand"})
         });
     }
 
     public boolean execute(CommandSender sender, String label, String[] args) {
-        if (!this.testPermission(sender)) {
+        if (!this.testPermission(sender) || !this.testInGame(sender)) {
             return false;
         }
-        if (!this.testIngame(sender)) {
-            return false;
-        }
-        if (args.length != 1) {
+
+        if (args.length < 1) {
             this.sendUsage(sender);
             return false;
         }
+
         Player player = (Player) sender;
         switch (args[0]) {
             case "all":
@@ -43,18 +39,20 @@ public class RepairCommand extends CommandBase {
                 }
                 Map<Integer, Item> contents = player.getInventory().getContents();
                 for (Item item : contents.values()) {
-                    if (api.isRepairable(item)) {
+                    if (essentialsAPI.isRepairable(item)) {
                         item.setDamage(0);
                     }
                 }
+
                 player.getInventory().setContents(contents);
                 if (sender.hasPermission("essentialsnk.repair.armor")) {
                     Item[] armors = player.getInventory().getArmorContents();
                     for (Item item : armors) {
-                        if (api.isRepairable(item)) {
+                        if (essentialsAPI.isRepairable(item)) {
                             item.setDamage(0);
                         }
                     }
+
                     player.getInventory().setArmorContents(armors);
                     sender.sendMessage(Language.translate("commands.repair.armor"));
                 } else {
@@ -63,10 +61,11 @@ public class RepairCommand extends CommandBase {
                 break;
             case "hand":
                 Item item = player.getInventory().getItemInHand();
-                if (!api.isRepairable(item)) {
+                if (!essentialsAPI.isRepairable(item)) {
                     sender.sendMessage(Language.translate("commands.repair.unrepairable"));
                     return false;
                 }
+
                 item.setDamage(0);
                 player.getInventory().setItemInHand(item);
                 sender.sendMessage(Language.translate("commands.repair.success"));

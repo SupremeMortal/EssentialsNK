@@ -1,6 +1,7 @@
 package cn.yescallop.essentialsnk.command.defaults;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
@@ -15,10 +16,7 @@ public class LightningCommand extends CommandBase {
     public LightningCommand(EssentialsAPI api) {
         super("lightning", api);
         this.setAliases(new String[]{"strike", "smite", "thor", "shock"});
-
-        // command parameters
-        commandParameters.clear();
-        this.commandParameters.put("default", new CommandParameter[] {
+        this.commandParameters.put("default", new CommandParameter[]{
                 new CommandParameter("player", CommandParamType.TARGET, true)
         });
     }
@@ -27,29 +25,29 @@ public class LightningCommand extends CommandBase {
         if (!this.testPermission(sender)) {
             return false;
         }
-        if (args.length > 1) {
-            this.sendUsage(sender);
-            return false;
-        }
+
         Player player;
         if (args.length == 0) {
-            if (!this.testIngame(sender)) {
+            if (!this.testInGame(sender)) {
                 return false;
             }
+
             player = (Player) sender;
         } else {
-            player = api.getServer().getPlayer(args[0]);
+            player = Server.getInstance().getPlayer(args[0]);
             if (player == null) {
                 sender.sendMessage(TextFormat.RED + Language.translate("commands.generic.player.notfound", args[0]));
                 return false;
             }
         }
+
         Position pos = args.length == 1 ? player : player.getTargetBlock(120);
         if (pos == null) {
             sender.sendMessage(TextFormat.RED + Language.translate("commands.lightning.unreachable"));
             return false;
         }
-        api.strikeLighting(pos);
+
+        essentialsAPI.strikeLighting(pos);
         sender.sendMessage(Language.translate("commands.lightning.success"));
         return true;
     }

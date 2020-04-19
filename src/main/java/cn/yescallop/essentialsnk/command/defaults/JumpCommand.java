@@ -13,29 +13,22 @@ public class JumpCommand extends CommandBase {
     public JumpCommand(EssentialsAPI api) {
         super("jump", api);
         this.setAliases(new String[]{"j", "jumpto"});
-
-        // command parameters
         commandParameters.clear();
     }
 
     public boolean execute(CommandSender sender, String label, String[] args) {
-        if (!this.testPermission(sender)) {
+        if (!this.testPermission(sender) || !this.testInGame(sender)) {
             return false;
         }
-        if (!this.testIngame(sender)) {
-            return false;
-        }
-        if (args.length != 0) {
-            this.sendUsage(sender);
-            return false;
-        }
+
         Player player = (Player) sender;
         Block block = player.getTargetBlock(120, EssentialsAPI.NON_SOLID_BLOCKS);
         if (block == null) {
             sender.sendMessage(TextFormat.RED + Language.translate("commands.jump.unreachable"));
             return false;
         }
-        player.teleport(api.getStandablePositionAt(block));
+
+        player.teleport(essentialsAPI.getStandablePositionAt(block));
         return true;
     }
 }

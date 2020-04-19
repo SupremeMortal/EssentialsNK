@@ -1,6 +1,7 @@
 package cn.yescallop.essentialsnk.command.defaults;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
@@ -14,9 +15,6 @@ public class MessageCommand extends CommandBase {
     public MessageCommand(EssentialsAPI api) {
         super("message", api);
         this.setAliases(new String[]{"m", "msg", "w", "whisper", "tell", "privatemessage", "pm"});
-
-        // command parameters
-        this.commandParameters.clear();
         this.commandParameters.put("default", new CommandParameter[]{
                 new CommandParameter("player", CommandParamType.TARGET, false),
                 new CommandParameter("message", CommandParamType.TEXT, false)
@@ -25,14 +23,15 @@ public class MessageCommand extends CommandBase {
 
     @Override
     public boolean execute(CommandSender sender, String label, String[] args) {
-        if (!testPermission(sender)) {
+        if (!this.testPermission(sender)) {
             return false;
         }
+
         if (args.length < 2) {
             return false;
         }
 
-        Player player = api.getServer().getPlayer(args[0]);
+        Player player = Server.getInstance().getPlayer(args[0]);
         if (player == null) {
             sender.sendMessage(TextFormat.RED + Language.translate("commands.generic.player.notfound", args[0]));
             return false;
@@ -46,8 +45,8 @@ public class MessageCommand extends CommandBase {
         sender.sendMessage(Language.translate("commands.message.toformat", player.getName(), builder.toString()));
         player.sendMessage(Language.translate("commands.message.fromformat", sender.getName(), builder.toString()));
 
-        api.getLastMessagedPlayers().put(sender.getName(), player.getName());
-        api.getLastMessagedPlayers().put(player.getName(), sender.getName());
+        essentialsAPI.getLastMessagedPlayers().put(sender.getName(), player.getName());
+        essentialsAPI.getLastMessagedPlayers().put(player.getName(), sender.getName());
         return true;
     }
 }

@@ -10,7 +10,7 @@ import cn.yescallop.essentialsnk.Language;
 
 public abstract class CommandBase extends Command {
 
-    protected EssentialsAPI api;
+    protected EssentialsAPI essentialsAPI;
 
     public CommandBase(String name, EssentialsAPI api) {
         super(name);
@@ -18,18 +18,10 @@ public abstract class CommandBase extends Command {
         String usageMessage = Language.translate("commands." + name + ".usage");
         this.usageMessage = usageMessage.equals("commands." + name + ".usage") ? "/" + name : usageMessage;
         this.setPermission("essentialsnk." + name);
-        this.api = api;
+        this.essentialsAPI = api;
     }
 
-    protected EssentialsAPI getAPI() {
-        return api;
-    }
-
-    protected void sendUsage(CommandSender sender) {
-        sender.sendMessage(new TranslationContainer("commands.generic.usage", this.usageMessage));
-    }
-
-    protected boolean testIngame(CommandSender sender) {
+    protected boolean testInGame(CommandSender sender) {
         if (!(sender instanceof Player)) {
             sender.sendMessage(TextFormat.RED + Language.translate("commands.generic.ingame"));
             return false;
@@ -37,7 +29,15 @@ public abstract class CommandBase extends Command {
         return true;
     }
 
+    protected void sendUsage(CommandSender sender) {
+        sender.sendMessage(new TranslationContainer("commands.generic.usage", this.usageMessage));
+    }
+
     protected void sendPermissionMessage(CommandSender sender) {
         sender.sendMessage(new TranslationContainer(TextFormat.RED + "%commands.generic.permission"));
+    }
+
+    protected EssentialsAPI getAPI() {
+        return essentialsAPI;
     }
 }

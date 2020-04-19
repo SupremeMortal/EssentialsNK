@@ -11,8 +11,6 @@ public class CompassCommand extends CommandBase {
     public CompassCommand(EssentialsAPI api) {
         super("compass", api);
         this.setAliases(new String[]{"direction"});
-
-        // command parameters
         commandParameters.clear();
     }
 
@@ -20,13 +18,11 @@ public class CompassCommand extends CommandBase {
         if (!this.testPermission(sender)) {
             return false;
         }
-        if (!this.testIngame(sender)) {
+
+        if (!this.testInGame(sender)) {
             return false;
         }
-        if (args.length != 0) {
-            this.sendUsage(sender);
-            return false;
-        }
+
         String direction;
         switch (((Player) sender).getDirection()) {
             case SOUTH:
@@ -44,6 +40,7 @@ public class CompassCommand extends CommandBase {
             default:
                 direction = "error";
         }
+
         sender.sendMessage(Language.translate("commands.compass.success", Language.translate("commands.compass." + direction)));
         return true;
     }

@@ -1,6 +1,7 @@
 package cn.yescallop.essentialsnk.command.defaults;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
@@ -14,10 +15,7 @@ public class GetPosCommand extends CommandBase {
     public GetPosCommand(EssentialsAPI api) {
         super("getpos", api);
         this.setAliases(new String[]{"coords", "position", "whereami", "getlocation", "getloc"});
-
-        // command parameters
-        commandParameters.clear();
-        this.commandParameters.put("default", new CommandParameter[] {
+        this.commandParameters.put("default", new CommandParameter[]{
                 new CommandParameter("player", CommandParamType.TARGET, true)
         });
     }
@@ -26,27 +24,27 @@ public class GetPosCommand extends CommandBase {
         if (!this.testPermission(sender)) {
             return false;
         }
-        if (args.length > 1) {
-            this.sendUsage(sender);
-            return false;
-        }
+
         Player player;
         if (args.length == 0) {
-            if (!this.testIngame(sender)) {
+            if (!this.testInGame(sender)) {
                 return false;
             }
+
             player = (Player) sender;
         } else {
             if (!sender.hasPermission("essentialsnk.getpos.others")) {
                 this.sendPermissionMessage(sender);
                 return false;
             }
-            player = api.getServer().getPlayer(args[0]);
+
+            player = Server.getInstance().getPlayer(args[0]);
             if (player == null) {
                 sender.sendMessage(TextFormat.RED + Language.translate("commands.generic.player.notfound", args[0]));
                 return false;
             }
         }
+
         sender.sendMessage(sender == player ? Language.translate("commands.getpos.success", player.getLevel().getName(), String.valueOf(player.getFloorX()), String.valueOf(player.getFloorY()), String.valueOf(player.getFloorZ())) : Language.translate("commands.getpos.success.other", player.getDisplayName(), player.getLevel().getName(), String.valueOf(player.getFloorX()), String.valueOf(player.getFloorY()), String.valueOf(player.getFloorZ())));
         return true;
     }

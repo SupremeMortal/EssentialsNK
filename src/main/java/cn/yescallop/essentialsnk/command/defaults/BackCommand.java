@@ -13,30 +13,23 @@ public class BackCommand extends CommandBase {
     public BackCommand(EssentialsAPI api) {
         super("back", api);
         this.setAliases(new String[]{"return"});
-
-        // command parameters
         commandParameters.clear();
     }
 
     public boolean execute(CommandSender sender, String label, String[] args) {
-        if (!this.testPermission(sender)) {
+        if (!this.testPermission(sender) || !this.testInGame(sender)) {
             return false;
         }
-        if (!this.testIngame(sender)) {
-            return false;
-        }
-        if (args.length != 0) {
-            this.sendUsage(sender);
-            return false;
-        }
+
         Player player = (Player) sender;
-        Location pos = api.getLastLocation(player);
+        Location pos = essentialsAPI.getLastLocation(player);
         if (pos == null) {
-            sender.sendMessage(TextFormat.RED + Language.translate("commands.back.notavalible"));
+            player.sendMessage(TextFormat.RED + Language.translate("commands.back.notavalible"));
             return false;
         }
+
         player.teleport(pos);
-        sender.sendMessage(Language.translate("commands.generic.teleporting"));
+        player.sendMessage(Language.translate("commands.generic.teleporting"));
         return true;
     }
 }

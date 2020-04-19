@@ -13,27 +13,18 @@ public class ItemDBCommand extends CommandBase {
     public ItemDBCommand(EssentialsAPI api) {
         super("itemdb", api);
         this.setAliases(new String[]{"itemno", "durability", "dura"});
-
-        // command parameters
-        commandParameters.clear();
-        this.commandParameters.put("default", new CommandParameter[] {
+        this.commandParameters.put("default", new CommandParameter[]{
                 new CommandParameter("target", true, new String[]{"name", "id"})
         });
     }
 
     public boolean execute(CommandSender sender, String label, String[] args) {
-        if (!this.testPermission(sender)) {
+        if (!this.testPermission(sender) || !this.testInGame(sender)) {
             return false;
         }
-        if (!this.testIngame(sender)) {
-            return false;
-        }
-        if (args.length > 1) {
-            this.sendUsage(sender);
-            return false;
-        }
+
         Item item = ((Player) sender).getInventory().getItemInHand();
-        String message = api.isRepairable(item) ? Language.translate("commands.itemdb.damage", String.valueOf(item.getDamage())) : Language.translate("commands.itemdb.meta", String.valueOf(item.getDamage()));
+        String message = essentialsAPI.isRepairable(item) ? Language.translate("commands.itemdb.damage", String.valueOf(item.getDamage())) : Language.translate("commands.itemdb.meta", String.valueOf(item.getDamage()));
         if (args.length == 1) {
             switch (args[0]) {
                 case "name":
@@ -44,6 +35,7 @@ public class ItemDBCommand extends CommandBase {
                     break;
             }
         }
+
         sender.sendMessage(message);
         return true;
     }

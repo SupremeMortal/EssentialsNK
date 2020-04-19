@@ -8,8 +8,6 @@ public class PingCommand extends CommandBase {
 
     public PingCommand(EssentialsAPI api) {
         super("ping", api);
-
-        // command parameters
         commandParameters.clear();
     }
 
@@ -17,6 +15,7 @@ public class PingCommand extends CommandBase {
         if (!this.testPermission(sender)) {
             return false;
         }
+
         sender.sendMessage("Pong!");
         return true;
     }
