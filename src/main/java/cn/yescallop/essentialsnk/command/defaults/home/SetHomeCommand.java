@@ -15,26 +15,22 @@ public class SetHomeCommand extends CommandBase {
 
     public SetHomeCommand(EssentialsAPI api) {
         super("sethome", api);
-        this.setAliases(new String[]{"createhome"});
-
-        // command parameters
-        commandParameters.clear();
-        this.commandParameters.put("default", new CommandParameter[] {
+        this.setAliases(new String[]{"createhome", "newhome"});
+        this.commandParameters.put("default", new CommandParameter[]{
                 new CommandParameter("home", CommandParamType.TEXT, false)
         });
     }
 
     public boolean execute(CommandSender sender, String label, String[] args) {
-        if (!this.testPermission(sender)) {
+        if (!this.testPermission(sender) || !this.testInGame(sender)) {
             return false;
         }
-        if (!this.testIngame(sender)) {
-            return false;
-        }
-        if (args.length != 1) {
+
+        if (args.length < 1) {
             this.sendUsage(sender);
             return false;
         }
+
         if (args[0].toLowerCase().equals("bed")) {
             sender.sendMessage(TextFormat.RED + Language.translate("commands.sethome.bed"));
             return false;
@@ -42,18 +38,22 @@ public class SetHomeCommand extends CommandBase {
             sender.sendMessage(TextFormat.RED + Language.translate("commands.sethome.empty"));
             return false;
         }
+
         Player player = (Player) sender;
-        OptionalInt allowedHomes = api.getAllowedHomes(player);
+        OptionalInt allowedHomes = essentialsAPI.getAllowedHomes(player);
         if (allowedHomes.isPresent()) {
-            int currentHomesCount = api.getHomesList(player).length;
+            int currentHomesCount = essentialsAPI.getHomesList(player).length;
             if (currentHomesCount >= allowedHomes.getAsInt()) {
                 sender.sendMessage(TextFormat.RED + Language.translate("commands.sethome.limit"));
                 return true;
             }
         }
-        sender.sendMessage(api.setHome(player, args[0].toLowerCase(), player) ?
+
+        sender.sendMessage(essentialsAPI.setHome(player, args[0].toLowerCase(), player) ?
                 Language.translate("commands.sethome.updated", args[0]) :
-                Language.translate("commands.sethome.success", args[0]));
+                Language.translate("commands.sethome.success", args[0])
+        );
+
         return true;
     }
 }

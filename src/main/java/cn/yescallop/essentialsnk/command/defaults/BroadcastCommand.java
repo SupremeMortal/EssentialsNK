@@ -1,5 +1,6 @@
 package cn.yescallop.essentialsnk.command.defaults;
 
+import cn.nukkit.Server;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
@@ -11,10 +12,7 @@ public class BroadcastCommand extends CommandBase {
     public BroadcastCommand(EssentialsAPI api) {
         super("broadcast", api);
         this.setAliases(new String[]{"bcast"});
-
-        // command parameters
-        commandParameters.clear();
-        this.commandParameters.put("default", new CommandParameter[] {
+        this.commandParameters.put("default", new CommandParameter[]{
                 new CommandParameter("message", CommandParamType.MESSAGE, true)
         });
     }
@@ -23,11 +21,13 @@ public class BroadcastCommand extends CommandBase {
         if (!this.testPermission(sender)) {
             return false;
         }
+
         if (args.length == 0) {
             this.sendUsage(sender);
             return false;
         }
-        api.getServer().broadcastMessage(String.join(" ", args));
+
+        Server.getInstance().broadcastMessage(String.join(" ", args));
         return true;
     }
 }

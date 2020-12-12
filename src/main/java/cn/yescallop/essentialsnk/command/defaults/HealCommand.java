@@ -1,6 +1,7 @@
 package cn.yescallop.essentialsnk.command.defaults;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
@@ -14,10 +15,7 @@ public class HealCommand extends CommandBase {
 
     public HealCommand(EssentialsAPI api) {
         super("heal", api);
-
-        // command parameters
-        commandParameters.clear();
-        this.commandParameters.put("default", new CommandParameter[] {
+        this.commandParameters.put("default", new CommandParameter[]{
                 new CommandParameter("player", CommandParamType.TARGET, true)
         });
     }
@@ -26,33 +24,34 @@ public class HealCommand extends CommandBase {
         if (!this.testPermission(sender)) {
             return false;
         }
-        if (args.length > 1) {
-            this.sendUsage(sender);
-            return false;
-        }
+
         Player player;
         if (args.length == 0) {
-            if (!this.testIngame(sender)) {
+            if (!this.testInGame(sender)) {
                 return false;
             }
+
             player = (Player) sender;
         } else {
             if (!sender.hasPermission("essentialsnk.heal.others")) {
                 this.sendPermissionMessage(sender);
                 return false;
             }
-            player = api.getServer().getPlayer(args[0]);
+
+            player = Server.getInstance().getPlayer(args[0]);
             if (player == null) {
                 sender.sendMessage(TextFormat.RED + Language.translate("commands.generic.player.notfound", args[0]));
                 return false;
             }
         }
-        player.heal(player.getMaxHealth() - player.getHealth());
+
+        player.setHealth(player.getMaxHealth());
         player.getLevel().addParticle(new HeartParticle(player.add(0, 2), 4));
         player.sendMessage(Language.translate("commands.heal.success"));
         if (sender != player) {
             sender.sendMessage(Language.translate("commands.heal.success.other", player.getDisplayName()));
         }
+
         return true;
     }
 }

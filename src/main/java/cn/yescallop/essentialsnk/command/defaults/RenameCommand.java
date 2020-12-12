@@ -16,33 +16,27 @@ public class RenameCommand extends CommandBase {
     public RenameCommand(EssentialsAPI api) {
         super("rename", api);
         this.setAliases(new String[]{"renameme"});
-
-
-        // command parameters
-        commandParameters.clear();
-        this.commandParameters.put("default", new CommandParameter[] {
+        this.commandParameters.put("default", new CommandParameter[]{
                 new CommandParameter("name", CommandParamType.STRING, false)
         });
     }
 
     public boolean execute(CommandSender sender, String label, String[] args) {
-        if (!this.testPermission(sender) || !this.testIngame(sender)) {
+        if (!this.testPermission(sender) || !this.testInGame(sender)) {
             return false;
         }
 
         Player player = (Player) sender;
-
         Item item = player.getInventory().getItemInHand();
 
-        if (item != null && !item.isNull()){
-
+        if (item != null && !item.isNull()) {
             StringJoiner newName = new StringJoiner(" ");
 
-            for (String arg : args){
+            for (String arg : args) {
                 newName.add(arg);
             }
 
-            if (newName.length() < 50){
+            if (newName.length() < 50) {
                 item.setCustomName(newName.toString());
                 player.getInventory().setItemInHand(item);
             } else {
@@ -50,6 +44,7 @@ public class RenameCommand extends CommandBase {
                 return false;
             }
         }
+
         return true;
     }
 }

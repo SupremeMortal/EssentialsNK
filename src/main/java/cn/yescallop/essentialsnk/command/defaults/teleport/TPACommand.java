@@ -26,17 +26,17 @@ public class TPACommand extends CommandBase {
         if (!this.testPermission(sender)) {
             return false;
         }
-        if (!this.testIngame(sender)) {
+        if (!this.testInGame(sender)) {
             return false;
         }
         if (args.length != 1) {
             this.sendUsage(sender);
             return false;
         }
-        if (api.hasCooldown(sender)) {
+        if (essentialsAPI.hasCooldown(sender)) {
             return true;
         }
-        Player player = api.getServer().getPlayer(args[0]);
+        Player player = essentialsAPI.getServer().getPlayer(args[0]);
         if (player == null) {
             sender.sendMessage(TextFormat.RED + Language.translate("commands.generic.player.notfound", args[0]));
             return false;
@@ -45,8 +45,8 @@ public class TPACommand extends CommandBase {
             sender.sendMessage(TextFormat.RED + Language.translate("commands.tpa.self"));
             return false;
         }
-        if (!api.isIgnoring(player.getUniqueId(), ((Player) sender).getUniqueId())) {
-            api.requestTP((Player) sender, player, true);
+        if (!essentialsAPI.isIgnoring(player.getUniqueId(), ((Player) sender).getUniqueId())) {
+            essentialsAPI.requestTP((Player) sender, player, true);
             player.sendMessage(Language.translate("commands.tpa.invite", sender.getName()));
             sender.sendMessage(Language.translate("commands.tpa.success", player.getDisplayName()));
         } else {

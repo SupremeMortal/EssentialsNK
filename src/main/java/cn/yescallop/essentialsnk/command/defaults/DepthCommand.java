@@ -11,22 +11,14 @@ public class DepthCommand extends CommandBase {
     public DepthCommand(EssentialsAPI api) {
         super("depth", api);
         this.setAliases(new String[]{"height"});
-
-        // command parameters
         commandParameters.clear();
     }
 
     public boolean execute(CommandSender sender, String label, String[] args) {
-        if (!this.testPermission(sender)) {
+        if (!this.testPermission(sender) || !this.testInGame(sender)) {
             return false;
         }
-        if (!this.testIngame(sender)) {
-            return false;
-        }
-        if (args.length != 0) {
-            this.sendUsage(sender);
-            return false;
-        }
+
         sender.sendMessage(Language.translate("commands.depth.success", String.valueOf(((Player) sender).getFloorY() - 63)));
         return true;
     }

@@ -1,6 +1,7 @@
 package cn.yescallop.essentialsnk.command.defaults;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
@@ -16,22 +17,14 @@ public class SpawnCommand extends CommandBase {
 
     public SpawnCommand(EssentialsAPI api) {
         super("spawn", api);
-
-        // command parameters
-        commandParameters.clear();
-        this.commandParameters.put("default", new CommandParameter[] {
+        this.commandParameters.put("default", new CommandParameter[]{
                 new CommandParameter("player", CommandParamType.TARGET, true)
         });
     }
 
     @Override
     public boolean execute(CommandSender sender, String label, String[] args) {
-        if (!this.testPermission(sender)) {
-            return false;
-        }
-
-        if (args.length == 0 && !this.testIngame(sender)) {
-            sender.sendMessage(TextFormat.RED + Language.translate("commands.generic.ingame"));
+        if (!this.testPermission(sender) || !this.testInGame(sender)) {
             return false;
         }
 
@@ -45,27 +38,28 @@ public class SpawnCommand extends CommandBase {
             return false;
         }
 
-        if (api.hasCooldown(sender)) {
+        if (essentialsAPI.hasCooldown(sender)) {
             return true;
         }
 
-        Player p;
+        Player player;
 
         if (args.length == 0) {
-            p = (Player) sender;
+            player = (Player) sender;
         } else {
-            p = getAPI().getServer().getPlayer(args[0]);
+            player = Server.getInstance().getPlayer(args[0]);
         }
 
-        if (p == null || !p.isOnline()) {
+        if (player == null || !player.isOnline()) {
             sender.sendMessage(TextFormat.RED + Language.translate("commands.generic.player.notfound", args[0]));
             return false;
         }
 
-        api.onTP(p, api.getServer().getDefaultLevel().getSpawnLocation(), Language.translate("commands.generic.teleporting"));
+        essentialsAPI.onTP(player, essentialsAPI.getServer().getDefaultLevel().getSpawnLocation(), Language.translate("commands.generic.teleporting"));
         if (args.length == 1) {
             sender.sendMessage(Language.translate("commands.generic.teleporting"));
         }
+
         return true;
     }
 }

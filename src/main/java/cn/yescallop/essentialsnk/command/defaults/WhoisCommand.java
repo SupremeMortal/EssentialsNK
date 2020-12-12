@@ -20,6 +20,7 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 
 public class WhoisCommand extends CommandBase {
+
     private static final Pattern UUID_PATTERN = Pattern.compile("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", Pattern.CASE_INSENSITIVE);
 
     private static final DateFormat DATE_FORMAT = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
@@ -30,7 +31,6 @@ public class WhoisCommand extends CommandBase {
         this.setUsage("/whois <name|uuid>");
         this.setPermission("essentialsnk.whois");
 
-        this.commandParameters.clear();
         this.commandParameters.put("player", new CommandParameter[]{
                 new CommandParameter("player", CommandParamType.TARGET, false)
         });
@@ -39,10 +39,13 @@ public class WhoisCommand extends CommandBase {
         });
     }
 
+    @Override
+    @SuppressWarnings("deprecation")
     public boolean execute(CommandSender sender, String label, String[] args) {
-        if (!this.testPermission(sender) && !this.testIngame(sender)) {
+        if (!this.testPermission(sender) || !this.testInGame(sender)) {
             return false;
         }
+
         if (args.length > 1 || args.length == 0 && !(sender instanceof Player)) {
             return false;
         }
@@ -53,9 +56,9 @@ public class WhoisCommand extends CommandBase {
         } else if (sender.hasPermission("essentialsnk.whois.other")) {
             try {
                 if (UUID_PATTERN.matcher(args[0]).matches()) {
-                    player = sender.getServer().getOfflinePlayer(UUID.fromString(args[0]));
+                    player = Server.getInstance().getOfflinePlayer(UUID.fromString(args[0]));
                 } else {
-                    player = sender.getServer().getOfflinePlayer(args[0]);
+                    player = Server.getInstance().getOfflinePlayer(args[0]);
                 }
             } catch (Exception e) {
                 player = null;
@@ -116,7 +119,7 @@ public class WhoisCommand extends CommandBase {
             Locale locale = new Locale(langCountry[0], langCountry[1]);
             message.add(Language.translate("commands.whois.language", locale.getDisplayName()));
 
-            message.add(Language.translate("commands.whois.vanished", api.isVanished(onlinePlayer)));
+            message.add(Language.translate("commands.whois.vanished", essentialsAPI.isVanished(onlinePlayer)));
 
             message.add(Language.translate("commands.whois.gamemode", Server.getGamemodeString(onlinePlayer.getGamemode())));
 

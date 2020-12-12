@@ -16,9 +16,6 @@ public class GamemodeCommand extends CommandBase {
     public GamemodeCommand(EssentialsAPI api) {
         super("gamemode", api);
         this.setAliases(new String[]{"gm", "gma", "gmc", "gms", "gmsp", "gmt", "adventure", "creative", "survival", "spectator", "viewer"});
-
-        // command parameters
-        commandParameters.clear();
         this.commandParameters.put("default", new CommandParameter[]{
                 new CommandParameter("mode", CommandParamType.INT, false),
                 new CommandParameter("player", CommandParamType.TARGET, true)
@@ -34,6 +31,7 @@ public class GamemodeCommand extends CommandBase {
         if (!this.testPermission(sender)) {
             return false;
         }
+
         Player player;
         int gamemode;
         if (label.toLowerCase().equals("gamemode") || label.toLowerCase().equals("gm")) {
@@ -42,21 +40,24 @@ public class GamemodeCommand extends CommandBase {
                 return false;
             }
             if (args.length == 1) {
-                if (!this.testIngame(sender)) {
+                if (!this.testInGame(sender)) {
                     return false;
                 }
+
                 player = (Player) sender;
             } else {
                 if (!sender.hasPermission("essentialsnk.gamemode.others")) {
                     this.sendPermissionMessage(sender);
                     return false;
                 }
-                player = api.getServer().getPlayer(args[1]);
+
+                player = Server.getInstance().getPlayer(args[1]);
                 if (player == null) {
                     sender.sendMessage(TextFormat.RED + Language.translate("commands.generic.player.notfound", args[1]));
                     return false;
                 }
             }
+
             gamemode = Server.getGamemodeFromString(args[0]);
             if (gamemode == -1) {
                 sender.sendMessage(TextFormat.RED + Language.translate("commands.gamemode.invalid", args[0]));
@@ -67,18 +68,22 @@ public class GamemodeCommand extends CommandBase {
                 this.sendUsage(sender, label);
                 return false;
             }
+
             if (args.length == 0) {
-                if (!this.testIngame(sender)) {
+                if (!this.testInGame(sender)) {
                     return false;
                 }
+
                 player = (Player) sender;
             } else {
-                player = api.getServer().getPlayer(args[0]);
+                player = Server.getInstance().getPlayer(args[0]);
+
                 if (player == null) {
                     sender.sendMessage(TextFormat.RED + Language.translate("commands.generic.player.notfound", args[0]));
                     return false;
                 }
             }
+
             switch (label.toLowerCase()) {
                 case "gms":
                 case "survival":
@@ -108,22 +113,20 @@ public class GamemodeCommand extends CommandBase {
                     return false;
             }
         }
+
         player.setGamemode(gamemode);
-        String gamemodeStr = Server.getGamemodeString(gamemode);
-        player.sendMessage(Language.translate("commands.gamemode.success", gamemodeStr));
+        String gamemodeString = Server.getGamemodeString(gamemode);
+        player.sendMessage(Language.translate("commands.gamemode.success", gamemodeString));
         if (sender != player) {
-            sender.sendMessage(Language.translate("commands.gamemode.success.other", player.getDisplayName(), gamemodeStr));
+            sender.sendMessage(Language.translate("commands.gamemode.success.other", player.getDisplayName(), gamemodeString));
         }
+
         return true;
     }
 
     private void sendUsage(CommandSender sender, String label) {
-        String usage;
-        if (label.toLowerCase().equals("gamemode") || label.toLowerCase().equals("gm")) {
-            usage = Language.translate("commands.gamemode.usage1", label.toLowerCase());
-        } else {
-            usage = Language.translate("commands.gamemode.usage2", label.toLowerCase());
-        }
+        label = label.toLowerCase();
+        String usage = label.equals("gamemode") || label.equals("gm") ? Language.translate("commands.gamemode.usage1", label.toLowerCase()) : Language.translate("commands.gamemode.usage2", label.toLowerCase());
         sender.sendMessage(new TranslationContainer("commands.generic.usage", usage));
     }
 }
