@@ -53,14 +53,10 @@ public class TPAcceptCommand extends CommandBase {
                 sender.sendMessage(TextFormat.RED + Language.translate("commands.generic.player.notfound", args[0]));
                 return false;
             }
-            if ((request = api.getTPRequestBetween(from, to)) != null) {
+            if ((request = api.getTPRequestBetween(from, to)) == null) {
                 sender.sendMessage(TextFormat.RED + Language.translate("commands.tpaccept.noRequestFrom", from.getDisplayName()));
                 return false;
             }
-        }
-        if (request == null) {
-            sender.sendMessage(TextFormat.RED + Language.translate("commands.tpaccept.noRequest"));
-            return false;
         }
         from.sendMessage(Language.translate("commands.tpaccept.accepted", to.getDisplayName()));
         sender.sendMessage(Language.translate("commands.generic.teleporting"));
