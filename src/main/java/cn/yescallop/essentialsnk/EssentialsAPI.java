@@ -253,7 +253,7 @@ public class EssentialsAPI {
     }
 
     private static int getHashCode(Player from, Player to, boolean isTo) {
-        return from.hashCode() + to.hashCode() + Boolean.hashCode(isTo);
+        return Objects.hash(from.hashCode(), to.hashCode(), isTo);
     }
 
     public void requestTP(Player from, Player to, boolean isTo) {

@@ -35,33 +35,28 @@ public class TPDenyCommand extends CommandBase {
             return false;
         }
         Player to = (Player) sender;
-        if (api.getLatestTPRequestTo(to) == null) {
-            sender.sendMessage(TextFormat.RED + Language.translate("commands.tpaccept.noRequest"));
-            return false;
-        }
         TPRequest request;
         Player from;
-        switch (args.length) {
-            case 0:
-                if ((request = api.getLatestTPRequestTo(to)) == null) {
-                    sender.sendMessage(TextFormat.RED + Language.translate("commands.tpaccept.unavailable"));
-                    return false;
-                }
-                from = request.getSender();
-                break;
-            case 1:
-                from = api.getServer().getPlayer(args[0]);
-                if (from == null) {
-                    sender.sendMessage(TextFormat.RED + Language.translate("commands.generic.player.notfound", args[0]));
-                    return false;
-                }
-                if ((request = api.getTPRequestBetween(from, to)) != null) {
-                    sender.sendMessage(TextFormat.RED + Language.translate("commands.tpaccept.noRequestFrom", from.getDisplayName()));
-                    return false;
-                }
-                break;
-            default:
+        if (args.length == 0) {
+            request = api.getLatestTPRequestTo(to);
+            if (request == null) {
+                sender.sendMessage(TextFormat.RED + Language.translate("commands.tpaccept.noRequest"));
                 return false;
+            }
+            from = request.getSender();
+        } else {
+            from = api.getServer().getPlayer(args[0]);
+            if (from == null) {
+                sender.sendMessage(TextFormat.RED + Language.translate("commands.generic.player.notfound", args[0]));
+                return false;
+            }
+            if ((request = api.getTPRequestBetween(from, to)) == null) {
+                sender.sendMessage(TextFormat.RED + Language.translate("commands.tpaccept.noRequestFrom", from.getDisplayName()));
+                return false;
+            }
+        }
+        if (sender != request.getRecipient()) {
+            return true;
         }
         from.sendMessage(Language.translate("commands.tpdeny.denied", to.getDisplayName()));
         sender.sendMessage(Language.translate("commands.tpdeny.success", to.getDisplayName()));

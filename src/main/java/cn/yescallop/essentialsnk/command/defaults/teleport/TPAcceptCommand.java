@@ -35,15 +35,12 @@ public class TPAcceptCommand extends CommandBase {
             return false;
         }
         Player to = (Player) sender;
-        if (api.getLatestTPRequestTo(to) == null) {
-            sender.sendMessage(TextFormat.RED + Language.translate("commands.tpaccept.noRequest"));
-            return false;
-        }
         TPRequest request;
         Player from;
         if (args.length == 0) {
-            if ((request = api.getLatestTPRequestTo(to)) == null) {
-                sender.sendMessage(TextFormat.RED + Language.translate("commands.tpaccept.unavailable"));
+            request = api.getLatestTPRequestTo(to);
+            if (request == null) {
+                sender.sendMessage(TextFormat.RED + Language.translate("commands.tpaccept.noRequest"));
                 return false;
             }
             from = request.getSender();
@@ -57,6 +54,9 @@ public class TPAcceptCommand extends CommandBase {
                 sender.sendMessage(TextFormat.RED + Language.translate("commands.tpaccept.noRequestFrom", from.getDisplayName()));
                 return false;
             }
+        }
+        if (sender != request.getRecipient()) {
+            return true;
         }
         from.sendMessage(Language.translate("commands.tpaccept.accepted", to.getDisplayName()));
         sender.sendMessage(Language.translate("commands.generic.teleporting"));
