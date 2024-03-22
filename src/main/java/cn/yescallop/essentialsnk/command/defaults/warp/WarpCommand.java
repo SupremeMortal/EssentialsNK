@@ -66,15 +66,15 @@ public class WarpCommand extends CommandBase {
                 this.sendPermissionMessage(sender);
                 return false;
             }
-            player = api.getServer().getPlayer(args[0]);
+            player = api.getServer().getPlayer(args[1]);
             if (player == null) {
-                sender.sendMessage(TextFormat.RED + Language.translate("commands.generic.player.notfound", args[0]));
+                sender.sendMessage(TextFormat.RED + Language.translate("commands.generic.player.notfound", args[1]));
                 return false;
             }
         }
         api.onTP(player, warp, Language.translate("commands.warp.success", args[0]));
         if (sender != player) {
-            player.sendMessage(Language.translate("commands.warp.success.other", player.getDisplayName(), args[0]));
+            sender.sendMessage(Language.translate("commands.warp.success.other", player.getDisplayName(), args[0]));
         }
         return true;
     }
